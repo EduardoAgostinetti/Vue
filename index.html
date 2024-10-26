@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro de Filmes</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app" class="movie-app">
+    <h2>Cadastro de Filmes</h2>
+    <div class="form">
+      <input
+        type="text"
+        v-model="newMovie.title"
+        placeholder="Título"
+      />
+      <input
+        type="text"
+        v-model="newMovie.genre"
+        placeholder="Gênero"
+      />
+      <input
+        type="number"
+        v-model="newMovie.year"
+        placeholder="Ano de Lançamento"
+      />
+      <button @click="addMovie">Cadastrar Filme</button>
+    </div>
+
+    <div class="movie-list">
+      <h3>Lista de Filmes</h3>
+      <p v-if="movies.length === 0">A lista de filmes está vazia.</p>
+      <ul v-else>
+        <li v-for="(movie, index) in movies" :key="index">
+          {{ movie.title }} - {{ movie.genre }} ({{ movie.year }})
+          <button class="delete" @click="deleteMovie(index)">Deletar</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        newMovie: {
+          title: '',
+          genre: '',
+          year: '',
+        },
+        movies: [],
+      },
+      methods: {
+        addMovie() {
+          if (this.newMovie.title && this.newMovie.genre && this.newMovie.year) {
+            this.movies.push({ ...this.newMovie });
+            this.newMovie.title = '';
+            this.newMovie.genre = '';
+            this.newMovie.year = '';
+          } else {
+            alert('Por favor, preencha todos os campos.');
+          }
+        },
+        deleteMovie(index) {
+          this.movies.splice(index, 1);
+        },
+      },
+    });
+  </script>
+</body>
+</html>
